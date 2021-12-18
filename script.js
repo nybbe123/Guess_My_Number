@@ -16,7 +16,7 @@ let highScore = 0;
  * functions to be called on window load
  */
 function main() {
-    currentStatus();
+    updateStatus();
     addEventListeners();
 }
 
@@ -24,7 +24,7 @@ function main() {
 /**
  * Displays the score based on current state
  */
-function currentStatus() {
+function updateStatus() {
     const scoreElement = document.querySelector('.score').innerHTML = score;
     const highScoreElement = document.querySelector('.highscore').innerHTML = highScore;
 }
@@ -49,25 +49,31 @@ function checkGuess() {
     const messageElement = document.querySelector('.message');
     const guess = document.querySelector('.guess').value;
     const checkBtn = document.getElementById('check-btn');
+    console.log(score);
 
-    if(guess == randomNumber) {
+    if (!guess) {
+        messageElement.innerHTML = 'No number!';
+    } else if(guess == randomNumber) {
         messageElement.innerHTML = 'You guessed right!';
         document.body.style.backgroundColor = 'green';
         checkBtn.style.display = 'none';
         highScore += score;
-        currentStatus();
+        updateStatus();
     } else if (guess > randomNumber && guess) {
         messageElement.innerHTML = 'Lower!';
         score--;
-        currentStatus();
+        updateStatus();
     } else if (guess < randomNumber && guess) {
         messageElement.innerHTML = 'Higher!';
         score--;
-        currentStatus();
+        updateStatus();
     } 
     
-    if (!guess) {
-        messageElement.innerHTML = 'No number!';
+    if (score < 1){
+        messageElement.innerHTML = 'You loose!';
+        document.body.style.backgroundColor = 'red';
+        checkBtn.style.display = 'none';
+        updateStatus();
     }
 }
 
@@ -89,5 +95,5 @@ function clearGame() {
     document.body.style.backgroundColor = '#222';
     checkBtn.style.display = 'unset';
 
-    currentStatus();
+    updateStatus();
 }
